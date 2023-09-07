@@ -22,7 +22,7 @@
 		<!-- App Bar -->
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<strong class="text-xl uppercase">Barvinok</strong>
+				<strong class="text-xl uppercase">ProxyPak</strong>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
 				<a
