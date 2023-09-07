@@ -1,0 +1,52 @@
+package //main
+
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+
+	"golang.org/x/sys/windows/registry"
+)
+
+// GetCurrentExecutablePath returns the path of the currently running executable.
+func GetCurrentExecutablePath() (string, error) {
+	execPath, err := os.Executable()
+	if err != nil {
+		return "", fmt.Errorf("could not get executable path: %w", err)
+	}
+	return execPath, nil
+}
+
+// AddExecutableToRegistry adds the executable to the Windows registry.
+func AddExecutableToRegistry(execPath string) error {
+	key, _, err := registry.CreateKey(registry.CURRENT_USER, `Software\Microsoft\Windows\CurrentVersion\Run`, registry.WRITE)
+	if err != nil {
+		return fmt.Errorf("could not create registry key: %w", err)
+	}
+	defer key.Close()
+
+	if err := key.SetStringValue("MyProgram", execPath); err != nil {
+		return fmt.Errorf("could not set registry value: %w", err)
+	}
+	return nil
+}
+
+// CheckLockFileExists checks if the lock file exists in the TEMP directory.
+func CheckLockFileExists() (bool, error) {
+	tempDir := os.TempDir()
+	lockFilePath := filepath.Join(tempDir, "temp.lock")
+	if _, err := os.Stat(lockFilePath); os.IsNotExist(err) {
+		return false, nil
+	} else if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+// CreateLockFile creates a lock file in the TEMP directory.
+func CreateLockFile() error {
+	tempDir := os.TempDir()
+	lockFilePath := filepath.Join(tempDir, "temp.lock")
+	_, err := os.Create(lockFilePath)
+	return err
+}
