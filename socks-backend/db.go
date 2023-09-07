@@ -7,7 +7,7 @@ import (
 
 func ConnectDB() {
 	var err error
-	db, err = sql.Open("mysql", "proxyBase:DmAryiDjdmfS3Jt2@tcp(38.180.61.247:3306)/proxyBase")
+	db, err = sql.Open("mysql", "user:pswd@tcp(ip:3306)/base")
 	if err != nil {
 		log.Fatal(err)
 	}
