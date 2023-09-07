@@ -122,13 +122,6 @@ func AddFirewallRule(port string) error {
 	return nil
 }
 
-//todo
-//1
-//2
-// better error handling
-// refactor for better readability (new packages)
-// add logging
-
 func main() {
 	var proxy InitialProxyData
 
